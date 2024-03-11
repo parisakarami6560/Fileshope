@@ -1,0 +1,341 @@
+﻿@using Filshopfil.DataLayer.order;
+@model Order
+@{
+    ViewData["title"] = "سبد خرید";
+}
+
+
+<main class="cart-page default">
+    <div class="container">
+        <div class="row">
+            <div class="cart-page-content col-xl-9 col-lg-8 col-md-12 order-1">
+                <div class="cart-page-title">
+                    <h1>سبد خرید</h1>
+                </div>
+                <div class="table-responsive checkout-content default">
+                    <table class="table">
+                        <tbody>
+                            @if(ViewBag.error == "empty")
+                            {
+                                <div class="alert alert-warning">سبد خرید شما خالی می باشد</div>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    <tr class="checkout-item">
+                                        <td>
+                                            <img src="@item.Product.ImageName" alt="">
+                                            <button class="checkout-btn-remove"></button>
+                                        </td>
+                                        <td>
+                                            <h3 class="checkout-title">
+                                                @item.Product.Name
+                                            </h3>
+                                        </td>
+                                        <td>@item.Amount تومان</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <aside class="cart-page-aside col-xl-3 col-lg-4 col-md-6 center-section order-2">
+                <div class="checkout-aside">
+                    <div class="checkout-summary">
+                        <div class="checkout-summary-main">
+                            <ul class="checkout-summary-summary">
+                                <li>@if(Model.OrderDetails != null)
+                                        {
+                                        <span>
+                                            مبلغ کل(@Model.OrderDetails.Count() کالا)
+                                        </span>
+                                        }
+                                        else
+                                        {
+                                        <span>
+                                            مبلغ کل(0 کالا)
+                                        </span>
+                                        }
+                                    <span>@Model.OrderSum تومان</span></li>
+                            </ul>
+                            <div class="checkout-summary-devider">
+                                <div></div>
+                            </div>
+                            <div class="checkout-summary-content">
+                                <div class="checkout-summary-price-title">مبلغ قابل پرداخت:</div>
+                                <div class="checkout-summary-price-value">
+                                    <span class="checkout-summary-price-value-amount">@Model.OrderSum</span>تومان
+                                </div>
+                                <a asp-action="StartPayment" class="selenium-next-step-shipping">
+                                    <div class="parent-btn">
+                                        <button class="dk-btn dk-btn-info">
+                                            پرداخت
+                                            <i class="now-ui-icons shopping_basket"></i>
+                                        </button>
+                                    </div>
+                                </a>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+
+
+@* <div class="content">
+    <div class="container-fluid">
+
+        <div class="payment_navigtions">
+            <div class="checkout-headers cart">
+                <ul>
+                    <li class="nav active">
+                        <a href="">
+                            <i class="bi bi-cart"></i>
+                            <p>سبد خرید</p>
+                        </a>
+                    </li>
+                    <li class="nav">
+                        <a href="">
+                            <i class="bi bi-truck"></i>
+                            <p>صورتحساب</p>
+                        </a>
+                    </li>
+                    <li class="nav">
+                        <i class="bi bi-card-list"></i>
+                        <p>فاکتور</p>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="cart-product">
+            <div class="row gy-4">
+                <div class="col-lg-9">
+                    <div class="cart-product-item">
+                        <div class="content-box">
+                            <div class="container-fluid">
+                                <div class="cart-items">
+                              @if(ViewBag.error=="empity")
+                              {
+                                  <div class="alert  alert-danger">
+                                      سبذ خرید شما خالی می باشید
+
+                                      </div>
+                              }
+                              else{
+                                    @foreach (var item in Model.OrderDetails)
+                                        {
+                                            <div class="item">
+                                                <div class="row gy-2">
+                                                    <div class="col-md-2 w-100-in-400">
+                                                        <div class="image">
+                                                            <img src="@item.Product.ImageName" alt=""
+                                                                 class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-10 w-100-in-400">
+                                                        <div class="d-flex justify-content-between align-items-md-start align-items-end flex-wrap">
+                                                            <div class="d-flex align-items-start flex-column me-2">
+                                                                <div class="title d-flex align-items-center flex-wrap">
+                                                                    <h6 class="font-16">
+                                                                        @item.Product.Name
+                                                                    </h6>
+                                                                </div>
+                                                                <div class="cart-item-feature d-flex flex-column align-items-start flex-wrap mt-3">
+
+                                                                    <div class="item d-flex align-items-center mt-2">
+                                                                        <div class="icon">
+                                                                            <i class="bi bi-shield-check"></i>
+                                                                        </div>
+                                                                        <div class="saller-name mx-2">گارانتی:</div>
+                                                                        <div class="saller-name text-muted">ایران موبایل</div>
+                                                                    </div>
+                                                                    <div class="item d-flex align-items-center mt-3">
+                                                                        <div class="counter">
+                                                                            <input type="text" name="count" class="counter"
+                                                                                   value="1">
+                                                                        </div>
+                                                                        <div class="remove danger-label ms-3">
+                                                                            <a href="" class="">
+                                                                                <i class="bi bi-trash-fill"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="action d-flex flex-wrap flex-column justify-content-sm-end justify-content-center align-items-center">
+                                                                <div class="product-box-price flex-column justify-content-end align-items-end">
+                                                                    <div class="product-box-price-discount mb-3">
+                                                                        <del>2,500,000</del>
+                                                                    </div>
+                                                                    <div class="product-box-price-price d-flex">
+                                                                        <h5 class="title-font main-color-green-color h2 mb-2">
+                                                                            @item.Amount
+                                                                        </h5>
+                                                                        <p class="mb-0 text-muted-two ms-1 ">تومان</p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="mt-2">
+                                                                    <a href=""
+                                                                       class="btn btn-sm main-color-one-outline  rounded-pill">
+                                                                        <i class="bi bi-plus-circle me-1"></i> ذخیره در لیست
+                                                                        خرید بعدی
+                                                                    </a>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                              }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-product-item mt-3">
+                        <div class="content-box">
+                            <div class="container-fluid">
+                                <div class="cart-items">
+                                    <div class="item">
+                                        <div class="row gy-2">
+                                            <div class="col-md-2 w-100-in-400">
+                                                <div class="image">
+                                                    <img src="assets/img/product/wach3.jpg" alt=""
+                                                         class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10 w-100-in-400">
+                                                <div class="d-flex justify-content-between align-items-md-start align-items-end flex-wrap">
+                                                    <div class="d-flex align-items-start flex-column me-2">
+                                                        <div class="title d-flex align-items-center flex-wrap">
+                                                            <h6 class="font-16">
+                                                                لپ تاپ 14.2
+                                                                اینچی اپل مدل 2021 MacBook MKGR3 M1 Pro <span class="badge ms-2 danger-label rounded-pill">17%</span>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="cart-item-feature d-flex flex-column align-items-start flex-wrap mt-3">
+                                                            <div class="item d-flex align-items-center">
+                                                                <div class="icon"><i class="bi bi-shop"></i></div>
+                                                                <div class="saller-name mx-2">فروشنده:</div>
+                                                                <div class="saller-name text-muted">ایران موبایل</div>
+                                                            </div>
+                                                            <div class="item d-flex align-items-center mt-2">
+                                                                <div class="icon">
+                                                                    <i class="bi bi-shield-check"></i>
+                                                                </div>
+                                                                <div class="saller-name mx-2">گارانتی:</div>
+                                                                <div class="saller-name text-muted">ایران موبایل</div>
+                                                            </div>
+                                                            <div class="item d-flex align-items-center mt-3">
+                                                                <div class="counter">
+                                                                    <input type="text" name="count" class="counter"
+                                                                           value="1">
+                                                                </div>
+                                                                <div class="remove danger-label ms-3">
+                                                                    <a href="" class="">
+                                                                        <i class="bi bi-trash-fill"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="action d-flex flex-wrap flex-column justify-content-sm-end justify-content-center align-items-center">
+                                                        <div class="product-box-price flex-column justify-content-end align-items-end">
+                                                            <div class="product-box-price-discount mb-3">
+                                                                <del>2,500,000</del>
+                                                            </div>
+                                                            <div class="product-box-price-price d-flex">
+                                                                <h5 class="title-font main-color-green-color h2 mb-2">
+                                                                    799,000
+                                                                </h5>
+                                                                <p class="mb-0 text-muted-two ms-1 ">تومان</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-2">
+                                                            <a href=""
+                                                               class="btn btn-sm main-color-one-outline rounded-pill">
+                                                                <i class="bi bi-plus-circle me-1"></i> ذخیره در لیست
+                                                                خرید بعدی
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="cart-canvases position-sticky top-0">
+                        <div class="item">
+                            <div class="factor">
+                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                    <h5 class="title-font mb-0 h6">قیمت کالا ها</h5>
+                                    <p class="mb-0 font-17">1,228,000 تومان</p>
+                                </div>
+
+                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                    <h5 class="title-font mb-0 h6">تخفیف کالا ها</h5>
+                                    <p class="mb-0 font-18">1,296,000 تومان</p>
+                                </div>
+
+                                <div class="d-flex factor-item flex-column mb-3 align-items-start justify-content-between">
+                                    <h5 class="title-font mb-0 h6">حمل و نقل</h5>
+                                    <form action="">
+                                        <div class="form-check mt-3">
+                                            <input type="radio" checked class="form-check-input" name="post"
+                                                   id="post-1">
+                                            <label for="post-1" class="form-check-label">
+                                                پیک موتوری اختصاصی (کمتر از 5 ساعت): 80,000 تومان
+                                            </label>
+                                        </div>
+                                        <div class="form-check mt-3">
+                                            <input type="radio" class="form-check-input" name="post" id="post-2">
+                                            <label for="post-2" class="form-check-label">
+                                                پیک عمومی شاهان (2 تا 3 روز کاری): 50,000 تومان
+
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                    <h5 class="title-font mb-0 h6"> @Model.OrderDetails.Count مجموع</h5>
+                                    <p class="mb-0 font-18">  @Model.OrderSum   </p>
+                                </div>
+
+                                <div class="action mt-3 d-flex align-items-center justify-content-center">
+                                    <a href="#"
+                                       class="btn main-color-one-outline py-2 rounded-pill rounded-3 d-block w-100">
+                                        تسویه
+                                        حساب
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> *@
